@@ -1,166 +1,87 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 
-type Question = {
-  question: string;
-  options: string[];
-  answer: string;
-};
-
-const questions: Question[] = [
-  {
-    question: "What is the capital of India?",
-    options: ["Mumbai", "New Delhi", "Kolkata", "Chennai"],
-    answer: "New Delhi",
-  },
-  {
-    question: "Which planet is known as the Red Planet?",
-    options: ["Earth", "Mars", "Jupiter", "Venus"],
-    answer: "Mars",
-  },
-  {
-    question: "Who wrote the Indian National Anthem?",
-    options: [
-      "Mahatma Gandhi",
-      "Rabindranath Tagore",
-      "Subhash Chandra Bose",
-      "Jawaharlal Nehru",
-    ],
-    answer: "Rabindranath Tagore",
-  },
-  {
-    question: "How many continents are there in the world?",
-    options: ["5", "6", "7", "8"],
-    answer: "7",
-  },
-  {
-    question: "Which is the largest ocean on Earth?",
-    options: [
-      "Indian Ocean",
-      "Pacific Ocean",
-      "Atlantic Ocean",
-      "Arctic Ocean",
-    ],
-    answer: "Pacific Ocean",
-  },
+const questions = [
+  { q: "India capital?", o: ["Delhi","Mumbai","Chennai","Kolkata"], a: "Delhi" },
+  { q: "IPL started?", o: ["2008","2010","2005","2012"], a: "2008" },
+  { q: "Biryani famous city?", o: ["Hyderabad","Delhi","Pune","Goa"], a: "Hyderabad" },
+  { q: "National animal?", o: ["Tiger","Lion","Elephant","Peacock"], a: "Tiger" },
+  { q: "Taj Mahal located?", o: ["Agra","Delhi","Jaipur","Lucknow"], a: "Agra" },
+  { q: "India currency?", o: ["Rupee","Dollar","Euro","Yen"], a: "Rupee" },
+  { q: "ISRO full form?", o: ["Indian Space Research Organisation","Space India","ISRO India","None"], a: "Indian Space Research Organisation" },
+  { q: "Virat jersey no?", o: ["18","7","10","45"], a: "18" },
+  { q: "Bollywood city?", o: ["Mumbai","Delhi","Chennai","Kolkata"], a: "Mumbai" },
+  { q: "India independence year?", o: ["1947","1950","1930","1960"], a: "1947" },
 ];
 
 export default function Challenge() {
-  const [answers, setAnswers] = useState<{ [key: number]: string }>({});
-  const [timeLeft, setTimeLeft] = useState(300); // 5 minutes
+  const searchParams = useSearchParams();
+  const email = searchParams.get("email");
+
+  const [answers, setAnswers] = useState<any>({});
+  const [timeLeft, setTimeLeft] = useState(120);
   const [submitted, setSubmitted] = useState(false);
   const [score, setScore] = useState(0);
 
-  // Timer
   useEffect(() => {
-    if (timeLeft <= 0) {
-      handleSubmit();
-      return;
-    }
-
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => prev - 1);
-    }, 1000);
-
+    if (timeLeft <= 0) submitQuiz();
+    const timer = setInterval(() => setTimeLeft((t) => t - 1), 1000);
     return () => clearInterval(timer);
   }, [timeLeft]);
 
-  const handleOptionSelect = (questionIndex: number, option: string) => {
-    if (submitted) return;
-
-    setAnswers((prev) => ({
-      ...prev,
-      [questionIndex]: option,
-    }));
-  };
-
-  const handleSubmit = async () => {
+  const submitQuiz = async () => {
     if (submitted) return;
 
     let finalScore = 0;
-
-    questions.forEach((q, index) => {
-      if (answers[index] === q.answer) {
-        finalScore += 1;
-      }
+    questions.forEach((q, i) => {
+      if (answers[i] === q.a) finalScore++;
     });
 
     setScore(finalScore);
     setSubmitted(true);
 
-    // Save result in Supabase
-    await supabase.from("participants").insert([
-      {
+    await supabase
+      .from("participants")
+      .update({
         score: finalScore,
-        time_taken: 300 - timeLeft,
-      },
-    ]);
+        time_taken: 120 - timeLeft,
+      })
+      .eq("email", email);
   };
 
   return (
-    <div className="min-h-screen bg-black text-white px-6 py-10">
-      <h1 className="text-3xl font-bold mb-4 text-center">
-        General Knowledge Challenge
-      </h1>
+    <div className="min-h-screen bg-black text-white p-6">
+      <h1>Quiz</h1>
+      <p>Time: {timeLeft}s</p>
 
-      <p className="text-center text-purple-400 mb-6">
-        Time Left: {Math.floor(timeLeft / 60)}:
-        {(timeLeft % 60).toString().padStart(2, "0")}
-      </p>
-
-      {!submitted ? (
-        <>
-          {questions.map((q, index) => (
-            <div
-              key={index}
-              className="bg-gray-900 p-6 rounded-xl mb-6 shadow-md"
-            >
-              <h2 className="text-lg font-semibold mb-4">
-                {index + 1}. {q.question}
-              </h2>
-
-              <div className="space-y-3">
-                {q.options.map((option, i) => (
-                  <button
-                    key={i}
-                    onClick={() =>
-                      handleOptionSelect(index, option)
-                    }
-                    className={`w-full text-left px-4 py-2 rounded-lg transition 
-                      ${
-                        answers[index] === option
-                          ? "bg-purple-600"
-                          : "bg-gray-800 hover:bg-gray-700"
-                      }`}
-                  >
-                    {option}
-                  </button>
-                ))}
-              </div>
-            </div>
-          ))}
-
-          <div className="text-center">
-            <button
-              onClick={handleSubmit}
-              className="bg-purple-600 px-8 py-3 rounded-xl text-lg font-semibold hover:bg-purple-700"
-            >
-              Submit
-            </button>
+      {!submitted &&
+        questions.map((q, i) => (
+          <div key={i}>
+            <h3>{q.q}</h3>
+            {q.o.map((opt, idx) => (
+              <button
+                key={idx}
+                onClick={() =>
+                  setAnswers((prev: any) => ({ ...prev, [i]: opt }))
+                }
+                className="block bg-gray-800 px-3 py-2 mt-2"
+              >
+                {opt}
+              </button>
+            ))}
           </div>
-        </>
-      ) : (
-        <div className="text-center mt-10">
-          <h2 className="text-2xl font-bold">
-            🎉 Your Score: {score} / {questions.length}
-          </h2>
-          <p className="text-gray-400 mt-4">
-            Results have been recorded.
-          </p>
-        </div>
+        ))}
+
+      {!submitted && (
+        <button onClick={submitQuiz} className="bg-purple-600 px-4 py-2">
+          Submit
+        </button>
       )}
+
+      {submitted && <h2>Your Score: {score}</h2>}
     </div>
   );
 }

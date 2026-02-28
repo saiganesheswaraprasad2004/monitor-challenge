@@ -9,7 +9,7 @@ export default function Home() {
       {/* HERO SECTION */}
       <section className="flex flex-col items-center justify-center text-center px-6 py-24">
         <h1 className="text-4xl md:text-6xl font-bold leading-tight">
-          Crack The General Knowledge Challenge 🚀 ft. Indian Cinema, Sports, Food, etc, of your choice. <br />
+          Crack The General Knowledge Challenge 🚀 <\n> ft. Indian Cinema, Sports, Food, etc, of your choice. <br />
           <span className="text-purple-400">
             Win a 24” Curved Monitor
           </span>

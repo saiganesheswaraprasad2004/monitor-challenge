@@ -51,3 +51,4 @@ export default function Register() {
     </div>
   );
 }
+console.log("KEY:", process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID);

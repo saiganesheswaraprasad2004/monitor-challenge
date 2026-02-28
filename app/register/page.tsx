@@ -21,7 +21,7 @@ export default function Register() {
 
   const handlePayment = async () => {
     if (!form.name || !form.email || !form.phone || !form.genre) {
-      alert("Fill all fields");
+      alert("Please fill all fields and select a genre.");
       return;
     }
 
@@ -29,8 +29,6 @@ export default function Register() {
 
     const res = await fetch("/api/create-order", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
     });
 
     const data = await res.json();
@@ -59,8 +57,6 @@ export default function Register() {
           alert("Payment verification failed");
         }
       },
-
-      theme: { color: "#7c3aed" },
     };
 
     const razor = new (window as any).Razorpay(options);
@@ -70,19 +66,21 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white p-6 flex flex-col items-center">
-      <h1 className="text-3xl mb-6">Register</h1>
+    <div className="min-h-screen bg-black text-white flex flex-col items-center p-6">
+      <h1 className="text-3xl mb-6">Register for Quiz</h1>
 
       <input
         placeholder="Name"
         className="mb-3 p-2 bg-gray-800 rounded"
         onChange={(e) => setForm({ ...form, name: e.target.value })}
       />
+
       <input
         placeholder="Email"
         className="mb-3 p-2 bg-gray-800 rounded"
         onChange={(e) => setForm({ ...form, email: e.target.value })}
       />
+
       <input
         placeholder="Phone"
         className="mb-3 p-2 bg-gray-800 rounded"

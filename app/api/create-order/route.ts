@@ -12,5 +12,8 @@ export async function POST() {
     currency: "INR",
   });
 
-  return NextResponse.json(order);
+  return NextResponse.json({
+    order,
+    key: process.env.RAZORPAY_KEY_ID,
+  });
 }

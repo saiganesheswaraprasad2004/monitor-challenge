@@ -7,38 +7,40 @@ export default function Leaderboard() {
   const [users, setUsers] = useState<any[]>([]);
 
   useEffect(() => {
+    const fetchUsers = async () => {
+      const { data } = await supabase
+        .from("participants")
+        .select("*")
+        .eq("payment_stat", true)
+        .order("score", { ascending: false })
+        .order("time_taken", { ascending: true });
+
+      setUsers(data || []);
+    };
+
     fetchUsers();
   }, []);
 
-  const fetchUsers = async () => {
-    const { data } = await supabase
-      .from("participants")
-      .select("*")
-      .order("score", { ascending: false })
-      .order("time_taken", { ascending: true })
-      .limit(10);
-
-    setUsers(data || []);
-  };
-
   return (
-    <div className="min-h-screen bg-black text-white p-10">
-      <h1 className="text-3xl mb-6">Leaderboard 🏆</h1>
+    <div className="min-h-screen bg-black text-white p-6">
+      <h1>Leaderboard</h1>
 
-      <table className="w-full text-left">
+      <table>
         <thead>
           <tr>
             <th>Rank</th>
+            <th>Name</th>
             <th>Score</th>
             <th>Time</th>
           </tr>
         </thead>
         <tbody>
-          {users.map((user, index) => (
-            <tr key={index}>
-              <td>{index + 1}</td>
-              <td>{user.score}</td>
-              <td>{user.time_taken}s</td>
+          {users.map((u, i) => (
+            <tr key={i}>
+              <td>{i + 1}</td>
+              <td>{u.name}</td>
+              <td>{u.score}</td>
+              <td>{u.time_taken}s</td>
             </tr>
           ))}
         </tbody>

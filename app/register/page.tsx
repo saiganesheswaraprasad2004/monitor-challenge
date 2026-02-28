@@ -33,21 +33,26 @@ export default function Register() {
       order_id: data.order.id,
 
       handler: async function (response: any) {
-        const verify = await fetch("/api/verify-payment", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            ...response,
-            ...form,
-          }),
-        });
+  console.log("Payment Success Response:", response);
 
-        const result = await verify.json();
+  const verify = await fetch("/api/verify-payment", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      ...response,
+      ...form,
+    }),
+  });
 
-        if (result.success) {
-          window.location.href = `/challenge?email=${form.email}&genre=${form.genre}`;
-        }
-      },
+  const result = await verify.json();
+  console.log("Verify Result:", result);
+
+  if (result.success) {
+    window.location.href = `/challenge?email=${form.email}&genre=${form.genre}`;
+  } else {
+    alert("Verification failed");
+  }
+},
     };
 
     const razor = new (window as any).Razorpay(options);

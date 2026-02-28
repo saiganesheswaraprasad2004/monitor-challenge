@@ -2,7 +2,7 @@ export const runtime = "nodejs";
 
 import { NextResponse } from "next/server";
 import crypto from "crypto";
-import clientPromise from "@/lib/mongodb";
+import clientPromise from "../../../lib/mongodb";
 
 export async function POST(req: Request) {
   const body = await req.json();

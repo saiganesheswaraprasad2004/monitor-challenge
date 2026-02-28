@@ -116,14 +116,13 @@ export default function ChallengeContent() {
 
   return (
     <div className="min-h-screen bg-black text-white p-6">
-      <h1>{genre} Quiz</h1>
-      <p className="mb-4">Time Left: {timeLeft}s</p>
+      <h1 className="text-2xl mb-2">{genre} Quiz</h1>
+      {!submitted && <p className="mb-4">Time Left: {timeLeft}s</p>}
 
       {!submitted &&
         questions.map((q, index) => (
           <div key={index} className="mb-6">
             <h3>{index + 1}. {q.question}</h3>
-
             {q.options.map((opt, i) => (
               <button
                 key={i}
@@ -151,7 +150,18 @@ export default function ChallengeContent() {
         </button>
       )}
 
-      {submitted && <h2>Your Score: {score}/10</h2>}
+      {submitted && (
+        <div className="mt-6">
+          <h2 className="text-xl mb-4">Your Score: {score}/10</h2>
+
+          <button
+            onClick={() => (window.location.href = "/leaderboard")}
+            className="bg-purple-600 px-6 py-3 rounded"
+          >
+            Proceed to Leaderboard 🏆
+          </button>
+        </div>
+      )}
     </div>
   );
 }

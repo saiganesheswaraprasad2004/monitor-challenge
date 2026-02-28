@@ -12,7 +12,7 @@ export default function Register() {
     const order = await res.json();
 
     const options = {
-      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+      key: data.key,
       amount: order.amount,
       currency: order.currency,
       order_id: order.id,
@@ -51,4 +51,4 @@ export default function Register() {
     </div>
   );
 }
-console.log("KEY:", process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID);
+

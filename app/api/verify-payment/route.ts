@@ -2,7 +2,7 @@ export const runtime = "nodejs";
 
 import { NextResponse } from "next/server";
 import crypto from "crypto";
-import { createClient } from "@supabase/supabase-js";
+import clientPromise from "@/lib/mongodb";
 
 export async function POST(req: Request) {
   const body = await req.json();
@@ -26,22 +26,19 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: false });
   }
 
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+  const client = await clientPromise;
+  const db = client.db("quizDB");
 
-  await supabase.from("participants").insert([
-    {
-      name,
-      email,
-      phone,
-      genre,
-      payment_stat: true,
-      score: 0,
-      time_taken: 0,
-    },
-  ]);
+  await db.collection("participants").insertOne({
+    name,
+    email,
+    phone,
+    genre,
+    score: 0,
+    time_taken: 0,
+    payment_stat: true,
+    created_at: new Date(),
+  });
 
   return NextResponse.json({ success: true });
 }

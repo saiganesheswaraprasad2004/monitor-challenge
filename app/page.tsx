@@ -25,7 +25,7 @@ export default function Home() {
             href="/register"
             className="bg-purple-600 hover:bg-purple-700 px-8 py-3 rounded-xl text-lg font-semibold transition duration-300 shadow-lg shadow-purple-500/30"
           >
-            Register Now – ₹49
+            Register Now – ₹50
           </Link>
 
           <Link
@@ -47,7 +47,7 @@ export default function Home() {
           
           <div className="bg-gray-900 p-6 rounded-2xl shadow-lg">
             <img
-              src="public/monitor.jpg"
+              src="public/monitor.jpeg"
               alt="Samsung 24 inch Curved Monitor"
               className="rounded-xl"
             />

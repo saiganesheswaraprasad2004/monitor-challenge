@@ -47,7 +47,7 @@ export default function Home() {
           
           <div className="bg-gray-900 p-6 rounded-2xl shadow-lg">
             <img
-              src="https://images.samsung.com/is/image/samsung/p6pim/in/lc24f390fhwxxl/gallery/in-curved-monitor-cf390-lc24f390fhwxxl-001-front-black-187446292?$720_576_PNG$"
+              src="public/monitor.jpg"
               alt="Samsung 24 inch Curved Monitor"
               className="rounded-xl"
             />

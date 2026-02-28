@@ -1,6 +1,7 @@
 "use client";
-import Script from "next/script";
+
 import { useState } from "react";
+import Script from "next/script";
 
 const genres = [
   "Cricket",
@@ -19,65 +20,127 @@ export default function Register() {
 
   const handlePayment = async () => {
     if (!form.name || !form.email || !form.phone || !form.genre) {
-      alert("Fill all fields");
+      alert("Please fill all fields");
       return;
     }
 
-    const res = await fetch("/api/create-order", { method: "POST" });
-    const data = await res.json();
+    try {
+      const res = await fetch("/api/create-order", {
+        method: "POST",
+      });
 
-    const options = {
-      key: data.key,
-      amount: data.order.amount,
-      currency: data.order.currency,
-      order_id: data.order.id,
+      const data = await res.json();
 
-      handler: async function (response: any) {
-  console.log("Payment Success Response:", response);
+      if (!data.order) {
+        alert("Failed to create order");
+        return;
+      }
 
-  const verify = await fetch("/api/verify-payment", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      ...response,
-      ...form,
-    }),
-  });
+      const options = {
+        key: data.key,
+        amount: data.order.amount,
+        currency: data.order.currency,
+        order_id: data.order.id,
 
-  const result = await verify.json();
-  console.log("Verify Result:", result);
+        handler: async function (response: any) {
+          console.log("Payment Success Response:", response);
 
-  if (result.success) {
-    window.location.href = `/challenge?email=${form.email}&genre=${form.genre}`;
-  } else {
-    alert("Verification failed");
-  }
-},
-    };
+          const verify = await fetch("/api/verify-payment", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+              name: form.name,
+              email: form.email,
+              phone: form.phone,
+              genre: form.genre,
+            }),
+          });
 
-    const razor = new (window as any).Razorpay(options);
-    razor.open();
+          const result = await verify.json();
+          console.log("Verify Result:", result);
+
+          if (result.success) {
+            window.location.replace(
+              `/challenge?email=${form.email}&genre=${form.genre}`
+            );
+          } else {
+            alert("Payment verification failed");
+          }
+        },
+
+        modal: {
+          ondismiss: function () {
+            console.log("Payment popup closed");
+          },
+        },
+
+        theme: {
+          color: "#7c3aed",
+        },
+      };
+
+      const razorpay = new (window as any).Razorpay(options);
+      razorpay.open();
+    } catch (error) {
+      console.error("Payment error:", error);
+      alert("Something went wrong");
+    }
   };
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col items-center p-6">
+
+      {/* Razorpay Script */}
       <Script
-  src="https://checkout.razorpay.com/v1/checkout.js"
-  strategy="beforeInteractive"
-/>
-      <h1 className="text-3xl mb-6">Register</h1>
+        src="https://checkout.razorpay.com/v1/checkout.js"
+        strategy="beforeInteractive"
+      />
 
-      <input placeholder="Name" className="mb-3 p-2 bg-gray-800" onChange={(e)=>setForm({...form,name:e.target.value})}/>
-      <input placeholder="Email" className="mb-3 p-2 bg-gray-800" onChange={(e)=>setForm({...form,email:e.target.value})}/>
-      <input placeholder="Phone" className="mb-3 p-2 bg-gray-800" onChange={(e)=>setForm({...form,phone:e.target.value})}/>
+      <h1 className="text-3xl mb-6">Register for Quiz</h1>
 
-      <select className="mb-4 p-2 bg-gray-800" onChange={(e)=>setForm({...form,genre:e.target.value})}>
+      <input
+        type="text"
+        placeholder="Name"
+        className="mb-3 p-2 bg-gray-800 w-64"
+        onChange={(e) => setForm({ ...form, name: e.target.value })}
+      />
+
+      <input
+        type="email"
+        placeholder="Email"
+        className="mb-3 p-2 bg-gray-800 w-64"
+        onChange={(e) => setForm({ ...form, email: e.target.value })}
+      />
+
+      <input
+        type="text"
+        placeholder="Phone"
+        className="mb-3 p-2 bg-gray-800 w-64"
+        onChange={(e) => setForm({ ...form, phone: e.target.value })}
+      />
+
+      <select
+        className="mb-4 p-2 bg-gray-800 w-64"
+        onChange={(e) => setForm({ ...form, genre: e.target.value })}
+      >
         <option value="">Select Genre</option>
-        {genres.map(g=> <option key={g}>{g}</option>)}
+        {genres.map((g) => (
+          <option key={g} value={g}>
+            {g}
+          </option>
+        ))}
       </select>
 
-      <button onClick={handlePayment} className="bg-purple-600 px-6 py-3">
-        Pay ₹49 & Start
+      <button
+        onClick={handlePayment}
+        className="bg-purple-600 px-6 py-3 rounded"
+      >
+        Pay ₹49 & Start Quiz
       </button>
     </div>
   );

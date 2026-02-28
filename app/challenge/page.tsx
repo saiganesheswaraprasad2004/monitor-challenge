@@ -88,12 +88,13 @@ export default function Challenge() {
     setSubmitted(true);
 
     await supabase
-      .from("participants")
-      .update({
-        score: finalScore,
-        time_taken: 120 - timeLeft,
-      })
-      .eq("email", email);
+  .from("participants")
+  .update({
+    score: finalScore,
+    time_taken: 120 - timeLeft,
+  })
+  .eq("email", email)
+  .eq("payment_stat", true);
   };
 
   return (

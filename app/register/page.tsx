@@ -119,7 +119,7 @@ export default function Register() {
         onClick={handlePayment}
         className="bg-purple-600 px-6 py-3 rounded"
       >
-        Pay ₹49 & Start Quiz
+        Pay ₹69 & Start Quiz
       </button>
     </div>
   );

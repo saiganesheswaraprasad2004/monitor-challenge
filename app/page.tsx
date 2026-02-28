@@ -9,14 +9,14 @@ export default function Home() {
       {/* HERO SECTION */}
       <section className="flex flex-col items-center justify-center text-center px-6 py-24">
         <h1 className="text-4xl md:text-6xl font-bold leading-tight">
-          Crack The Tech Challenge 🚀 <br />
+          Crack The General Knowledge Challenge 🚀 ft. Indian Cinema, Sports, Food, etc, of your choice. <br />
           <span className="text-purple-400">
             Win a 24” Curved Monitor
           </span>
         </h1>
 
         <p className="mt-6 text-gray-300 max-w-2xl text-lg">
-          Prove your General Knowledge skills in a 20-question timed challenge.
+          Prove your General Knowledge skills in a 10-question timed challenge.
           Highest score wins the prize.
         </p>
 
@@ -25,7 +25,7 @@ export default function Home() {
             href="/register"
             className="bg-purple-600 hover:bg-purple-700 px-8 py-3 rounded-xl text-lg font-semibold transition duration-300 shadow-lg shadow-purple-500/30"
           >
-            Register Now – ₹50
+            Register Now – ₹69
           </Link>
 
           <Link
@@ -62,7 +62,7 @@ export default function Home() {
               <li>✔ Full HD Resolution</li>
               <li>✔ Eye Saver Mode</li>
               <li>✔ Perfect for Coding & Gaming</li>
-              <li>✔ Approx Market Value ₹8,000</li>
+              <li>✔ Approx Market Value ₹10,000</li>
             </ul>
           </div>
 
@@ -80,14 +80,14 @@ export default function Home() {
           <div className="bg-gray-900 p-8 rounded-2xl shadow-md">
             <h3 className="text-xl font-semibold mb-3">1️⃣ Register</h3>
             <p className="text-gray-400">
-              Pay ₹49 participation fee securely via UPI.
+              Pay ₹69 participation fee securely via UPI.
             </p>
           </div>
 
           <div className="bg-gray-900 p-8 rounded-2xl shadow-md">
             <h3 className="text-xl font-semibold mb-3">2️⃣ Take Challenge</h3>
             <p className="text-gray-400">
-              Attempt 20 technical MCQs within 15 minutes.
+              Attempt 10 General Knowledge MCQs of a genre of your choice within 2 minutes.
             </p>
           </div>
 
@@ -109,8 +109,8 @@ export default function Home() {
 
         <div className="mt-8 max-w-3xl mx-auto text-gray-400 text-left space-y-4">
           <p>• This is a skill-based competitive challenge.</p>
-          <p>• Total 20 multiple choice questions.</p>
-          <p>• Duration: 15 minutes.</p>
+          <p>• Total 10 multiple choice questions.</p>
+          <p>• Duration: 2 minutes.</p>
           <p>• Highest score wins.</p>
           <p>• Tie-breaker: Lowest completion time.</p>
           <p>• Winner announced on leaderboard page.</p>

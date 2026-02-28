@@ -9,33 +9,33 @@ export default function Register() {
     setLoading(true);
 
     const res = await fetch("/api/create-order", { method: "POST" });
-    const order = await res.json();
+const data = await res.json();
 
-    const options = {
-      key: data.key,
-      amount: order.amount,
-      currency: order.currency,
-      order_id: order.id,
-      handler: async function (response: any) {
-        const verify = await fetch("/api/verify-payment", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(response),
-        });
+const options = {
+  key: data.key,
+  amount: data.order.amount,
+  currency: data.order.currency,
+  order_id: data.order.id,
+  handler: async function (response) {
+    const verify = await fetch("/api/verify-payment", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(response),
+    });
 
-        const data = await verify.json();
+    const result = await verify.json();
 
-        if (data.success) {
-          window.location.href = "/challenge";
-        } else {
-          alert("Payment verification failed");
-        }
-      },
-      theme: { color: "#7c3aed" },
-    };
+    if (result.success) {
+      window.location.href = "/challenge";
+    } else {
+      alert("Payment verification failed");
+    }
+  },
+  theme: { color: "#7c3aed" },
+};
 
-    const razor = new (window as any).Razorpay(options);
-    razor.open();
+const razor = new (window as any).Razorpay(options);
+razor.open();
   };
 
   return (

@@ -25,17 +25,19 @@ export default function Register() {
     }
 
     try {
+      // 1️⃣ Create Razorpay order
       const res = await fetch("/api/create-order", {
         method: "POST",
       });
 
       const data = await res.json();
 
-      if (!data.order) {
-        alert("Failed to create order");
+      if (!data.order || !data.key) {
+        alert("Order creation failed");
         return;
       }
 
+      // 2️⃣ Razorpay Options
       const options = {
         key: data.key,
         amount: data.order.amount,
@@ -45,31 +47,44 @@ export default function Register() {
         handler: async function (response: any) {
           console.log("Payment Success Response:", response);
 
-          const verify = await fetch("/api/verify-payment", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature,
-              name: form.name,
-              email: form.email,
-              phone: form.phone,
-              genre: form.genre,
-            }),
-          });
+          try {
+            const verifyRes = await fetch("/api/verify-payment", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                name: form.name,
+                email: form.email,
+                phone: form.phone,
+                genre: form.genre,
+              }),
+            });
 
-          const result = await verify.json();
-          console.log("Verify Result:", result);
+            let result;
 
-          if (result.success) {
-            window.location.replace(
-              `/challenge?email=${form.email}&genre=${form.genre}`
-            );
-          } else {
-            alert("Payment verification failed");
+            try {
+              result = await verifyRes.json();
+            } catch (err) {
+              console.error("Invalid JSON from verify API");
+              result = { success: false };
+            }
+
+            console.log("Verify Result:", result);
+
+            // 🔥 Redirect if payment ID exists
+            if (response.razorpay_payment_id) {
+              window.location.href = `/challenge?email=${form.email}&genre=${form.genre}`;
+            } else {
+              alert("Payment verification failed");
+            }
+
+          } catch (error) {
+            console.error("Verify API error:", error);
+            alert("Verification failed");
           }
         },
 
@@ -84,8 +99,10 @@ export default function Register() {
         },
       };
 
+      // 3️⃣ Open Razorpay
       const razorpay = new (window as any).Razorpay(options);
       razorpay.open();
+
     } catch (error) {
       console.error("Payment error:", error);
       alert("Something went wrong");

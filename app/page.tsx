@@ -1,65 +1,130 @@
-import Image from "next/image";
+"use client";
+
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <main className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white">
+
+      {/* HERO SECTION */}
+      <section className="flex flex-col items-center justify-center text-center px-6 py-24">
+        <h1 className="text-4xl md:text-6xl font-bold leading-tight">
+          Crack The Tech Challenge 🚀 <br />
+          <span className="text-purple-400">
+            Win a 24” Curved Monitor
+          </span>
+        </h1>
+
+        <p className="mt-6 text-gray-300 max-w-2xl text-lg">
+          Prove your General Knowledge skills in a 20-question timed challenge.
+          Highest score wins the prize.
+        </p>
+
+        <div className="mt-8 flex gap-4">
+          <Link
+            href="/register"
+            className="bg-purple-600 hover:bg-purple-700 px-8 py-3 rounded-xl text-lg font-semibold transition duration-300 shadow-lg shadow-purple-500/30"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+            Register Now – ₹49
+          </Link>
+
+          <Link
+            href="/leaderboard"
+            className="border border-purple-500 px-8 py-3 rounded-xl text-lg hover:bg-purple-500/10 transition duration-300"
+          >
+            View Leaderboard
+          </Link>
+        </div>
+      </section>
+
+      {/* PRIZE SECTION */}
+      <section className="px-6 py-20 bg-gray-950 text-center">
+        <h2 className="text-3xl font-bold text-purple-400">
+          The Prize 🎯
+        </h2>
+
+        <div className="mt-10 max-w-4xl mx-auto grid md:grid-cols-2 gap-10 items-center">
+          
+          <div className="bg-gray-900 p-6 rounded-2xl shadow-lg">
+            <img
+              src="https://images.samsung.com/is/image/samsung/p6pim/in/lc24f390fhwxxl/gallery/in-curved-monitor-cf390-lc24f390fhwxxl-001-front-black-187446292?$720_576_PNG$"
+              alt="Samsung 24 inch Curved Monitor"
+              className="rounded-xl"
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          </div>
+
+          <div className="text-left">
+            <h3 className="text-2xl font-semibold mb-4">
+              Samsung 24” Curved Monitor
+            </h3>
+            <ul className="space-y-3 text-gray-300">
+              <li>✔ 24-inch Curved Display</li>
+              <li>✔ Full HD Resolution</li>
+              <li>✔ Eye Saver Mode</li>
+              <li>✔ Perfect for Coding & Gaming</li>
+              <li>✔ Approx Market Value ₹8,000</li>
+            </ul>
+          </div>
+
         </div>
-      </main>
-    </div>
+      </section>
+
+      {/* HOW IT WORKS */}
+      <section className="px-6 py-20 text-center">
+        <h2 className="text-3xl font-bold text-purple-400">
+          How It Works ⚡
+        </h2>
+
+        <div className="mt-12 grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+
+          <div className="bg-gray-900 p-8 rounded-2xl shadow-md">
+            <h3 className="text-xl font-semibold mb-3">1️⃣ Register</h3>
+            <p className="text-gray-400">
+              Pay ₹49 participation fee securely via UPI.
+            </p>
+          </div>
+
+          <div className="bg-gray-900 p-8 rounded-2xl shadow-md">
+            <h3 className="text-xl font-semibold mb-3">2️⃣ Take Challenge</h3>
+            <p className="text-gray-400">
+              Attempt 20 technical MCQs within 15 minutes.
+            </p>
+          </div>
+
+          <div className="bg-gray-900 p-8 rounded-2xl shadow-md">
+            <h3 className="text-xl font-semibold mb-3">3️⃣ Win</h3>
+            <p className="text-gray-400">
+              Highest score (fastest time tie-breaker) wins.
+            </p>
+          </div>
+
+        </div>
+      </section>
+
+      {/* RULES SECTION */}
+      <section className="px-6 py-20 bg-gray-950 text-center">
+        <h2 className="text-3xl font-bold text-purple-400">
+          Contest Rules 📜
+        </h2>
+
+        <div className="mt-8 max-w-3xl mx-auto text-gray-400 text-left space-y-4">
+          <p>• This is a skill-based competitive challenge.</p>
+          <p>• Total 20 multiple choice questions.</p>
+          <p>• Duration: 15 minutes.</p>
+          <p>• Highest score wins.</p>
+          <p>• Tie-breaker: Lowest completion time.</p>
+          <p>• Winner announced on leaderboard page.</p>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="bg-black py-10 text-center text-gray-500 text-sm">
+        <p>© 2026 Tech Challenge. All rights reserved.</p>
+        <p className="mt-2">
+          This is a skill-based competitive challenge. No element of chance is involved.
+        </p>
+      </footer>
+
+    </main>
   );
 }

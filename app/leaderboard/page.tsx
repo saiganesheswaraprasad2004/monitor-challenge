@@ -24,27 +24,11 @@ export default function Leaderboard() {
   return (
     <div className="min-h-screen bg-black text-white p-6">
       <h1>Leaderboard</h1>
-
-      <table>
-        <thead>
-          <tr>
-            <th>Rank</th>
-            <th>Name</th>
-            <th>Score</th>
-            <th>Time</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((u, i) => (
-            <tr key={i}>
-              <td>{i + 1}</td>
-              <td>{u.name}</td>
-              <td>{u.score}</td>
-              <td>{u.time_taken}s</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {users.map((u, i) => (
+        <div key={i}>
+          {i + 1}. {u.name} - {u.score} marks - {u.time_taken}s
+        </div>
+      ))}
     </div>
   );
 }

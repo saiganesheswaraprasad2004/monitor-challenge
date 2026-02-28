@@ -2,20 +2,41 @@
 
 import { useState } from "react";
 
+const genres = [
+  "Cricket",
+  "Indian Movies",
+  "Hyderabadi Food",
+  "Indian General",
+];
+
 export default function Register() {
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    genre: "",
+  });
+
   const [loading, setLoading] = useState(false);
 
   const handlePayment = async () => {
+    if (!form.name || !form.email || !form.phone || !form.genre) {
+      alert("Fill all fields");
+      return;
+    }
+
     setLoading(true);
 
     const res = await fetch("/api/create-order", {
       method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
     });
 
     const data = await res.json();
 
     const options = {
-      key: data.key, // 🔥 key comes from backend
+      key: data.key,
       amount: data.order.amount,
       currency: data.order.currency,
       order_id: data.order.id,
@@ -24,13 +45,16 @@ export default function Register() {
         const verify = await fetch("/api/verify-payment", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(response),
+          body: JSON.stringify({
+            ...response,
+            ...form,
+          }),
         });
 
         const result = await verify.json();
 
         if (result.success) {
-          window.location.href = "/challenge";
+          window.location.href = `/challenge?email=${form.email}&genre=${form.genre}`;
         } else {
           alert("Payment verification failed");
         }
@@ -46,12 +70,38 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-black text-white">
-      <h1 className="text-3xl font-bold mb-6">Register for Challenge</h1>
+    <div className="min-h-screen bg-black text-white p-6 flex flex-col items-center">
+      <h1 className="text-3xl mb-6">Register</h1>
+
+      <input
+        placeholder="Name"
+        className="mb-3 p-2 bg-gray-800 rounded"
+        onChange={(e) => setForm({ ...form, name: e.target.value })}
+      />
+      <input
+        placeholder="Email"
+        className="mb-3 p-2 bg-gray-800 rounded"
+        onChange={(e) => setForm({ ...form, email: e.target.value })}
+      />
+      <input
+        placeholder="Phone"
+        className="mb-3 p-2 bg-gray-800 rounded"
+        onChange={(e) => setForm({ ...form, phone: e.target.value })}
+      />
+
+      <select
+        className="mb-4 p-2 bg-gray-800 rounded"
+        onChange={(e) => setForm({ ...form, genre: e.target.value })}
+      >
+        <option value="">Select Genre</option>
+        {genres.map((g) => (
+          <option key={g}>{g}</option>
+        ))}
+      </select>
 
       <button
         onClick={handlePayment}
-        className="bg-purple-600 px-8 py-3 rounded-xl"
+        className="bg-purple-600 px-6 py-3 rounded"
       >
         {loading ? "Processing..." : "Pay ₹49 & Start"}
       </button>

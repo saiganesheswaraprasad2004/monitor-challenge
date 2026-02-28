@@ -11,35 +11,35 @@ const questionBank: any = {
     { q: "Players in team?", o: ["11","10","9","12"], a: "11" },
     { q: "T20 overs?", o: ["20","50","10","30"], a: "20" },
     { q: "India WC 1983 captain?", o: ["Kapil Dev","Dhoni","Azhar","Gavaskar"], a: "Kapil Dev" },
-    { q: "Virat number?", o: ["18","7","10","45"], a: "18" },
-    { q: "Cricket pitch length?", o: ["22 yards","18","20","24"], a: "22 yards" },
-    { q: "Dhoni nickname?", o: ["Captain Cool","Hitman","King","Boom"], a: "Captain Cool" },
+    { q: "Virat jersey no?", o: ["18","7","10","45"], a: "18" },
+    { q: "Pitch length?", o: ["22 yards","18","20","24"], a: "22 yards" },
     { q: "ODI overs?", o: ["50","20","40","60"], a: "50" },
+    { q: "Dhoni nickname?", o: ["Captain Cool","King","Hitman","Boom"], a: "Captain Cool" },
     { q: "India WC 2011 won against?", o: ["SL","Pak","Aus","Eng"], a: "SL" },
   ],
 
   "Indian Movies": [
     { q: "Bollywood city?", o: ["Mumbai","Delhi","Chennai","Kolkata"], a: "Mumbai" },
-    { q: "RRR director?", o: ["Rajamouli","Rohit","SLB","Hirani"], a: "Rajamouli" },
+    { q: "RRR director?", o: ["Rajamouli","Rohit","Hirani","SLB"], a: "Rajamouli" },
     { q: "3 Idiots actor?", o: ["Aamir","SRK","Salman","Ranbir"], a: "Aamir" },
     { q: "Baahubali language?", o: ["Telugu","Hindi","Tamil","Malayalam"], a: "Telugu" },
     { q: "Dangal sport?", o: ["Wrestling","Cricket","Boxing","Hockey"], a: "Wrestling" },
-    { q: "Oscar winner song 2023?", o: ["Naatu","Kesariya","Jai Ho","Why"], a: "Naatu" },
     { q: "Pathaan actor?", o: ["SRK","Salman","Aamir","Ajay"], a: "SRK" },
-    { q: "Kantara language?", o: ["Kannada","Telugu","Tamil","Hindi"], a: "Kannada" },
-    { q: "Lagaan sport?", o: ["Cricket","Football","Hockey","Kabaddi"], a: "Cricket" },
     { q: "KGF hero?", o: ["Yash","Prabhas","Allu","Ram"], a: "Yash" },
+    { q: "Lagaan sport?", o: ["Cricket","Football","Hockey","Kabaddi"], a: "Cricket" },
+    { q: "Oscar winner song 2023?", o: ["Naatu","Kesariya","Jai Ho","Why"], a: "Naatu" },
+    { q: "Kantara language?", o: ["Kannada","Telugu","Tamil","Hindi"], a: "Kannada" },
   ],
 
   "Hyderabadi Food": [
     { q: "Famous dish?", o: ["Biryani","Idli","Dosa","Pav"], a: "Biryani" },
     { q: "Sweet of Hyderabad?", o: ["Qubani","Jalebi","Gulab","Rasgulla"], a: "Qubani" },
     { q: "Irani chai origin?", o: ["Iran","India","UK","Arab"], a: "Iran" },
-    { q: "Famous biscuit?", o: ["Osmania","Marie","GoodDay","Hide"], a: "Osmania" },
+    { q: "Famous biscuit?", o: ["Osmania","Marie","Hide","GoodDay"], a: "Osmania" },
     { q: "Haleem month?", o: ["Ramzan","Diwali","Holi","Eid al Adha"], a: "Ramzan" },
-    { q: "Mirchi ka ___?", o: ["Salam","Salaan","Masala","Chutney"], a: "Salaan" },
+    { q: "Mirchi ka ___?", o: ["Salaan","Masala","Salam","Chutney"], a: "Salaan" },
     { q: "Biryani style?", o: ["Dum","Fry","Boil","Steam"], a: "Dum" },
-    { q: "Paradise is famous for?", o: ["Biryani","Pizza","Burger","Pasta"], a: "Biryani" },
+    { q: "Paradise famous for?", o: ["Biryani","Pizza","Burger","Pasta"], a: "Biryani" },
     { q: "Charminar city?", o: ["Hyderabad","Delhi","Mumbai","Chennai"], a: "Hyderabad" },
     { q: "Double ka ___?", o: ["Meetha","Halwa","Sweet","Milk"], a: "Meetha" },
   ],
@@ -48,7 +48,7 @@ const questionBank: any = {
     { q: "Capital of India?", o: ["Delhi","Mumbai","Chennai","Kolkata"], a: "Delhi" },
     { q: "National animal?", o: ["Tiger","Lion","Elephant","Peacock"], a: "Tiger" },
     { q: "Independence year?", o: ["1947","1950","1930","1960"], a: "1947" },
-    { q: "ISRO full form?", o: ["Indian Space Research Organisation","Space India","ISRO India","None"], a: "Indian Space Research Organisation" },
+    { q: "ISRO full form?", o: ["Indian Space Research Organisation","ISRO India","Space India","None"], a: "Indian Space Research Organisation" },
     { q: "Currency?", o: ["Rupee","Dollar","Euro","Yen"], a: "Rupee" },
     { q: "Taj Mahal city?", o: ["Agra","Delhi","Jaipur","Lucknow"], a: "Agra" },
     { q: "National sport?", o: ["Hockey","Cricket","Football","Kabaddi"], a: "Hockey" },
@@ -88,13 +88,12 @@ export default function Challenge() {
     setSubmitted(true);
 
     await supabase
-  .from("participants")
-  .update({
-    score: finalScore,
-    time_taken: 120 - timeLeft,
-  })
-  .eq("email", email)
-  .eq("payment_stat", true);
+      .from("participants")
+      .update({
+        score: finalScore,
+        time_taken: 120 - timeLeft,
+      })
+      .eq("email", email);
   };
 
   return (

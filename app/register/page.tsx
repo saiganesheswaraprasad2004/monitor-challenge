@@ -1,5 +1,5 @@
 "use client";
-
+import Script from "next/script";
 import { useState } from "react";
 
 const genres = [
@@ -61,6 +61,10 @@ export default function Register() {
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col items-center p-6">
+      <Script
+  src="https://checkout.razorpay.com/v1/checkout.js"
+  strategy="beforeInteractive"
+/>
       <h1 className="text-3xl mb-6">Register</h1>
 
       <input placeholder="Name" className="mb-3 p-2 bg-gray-800" onChange={(e)=>setForm({...form,name:e.target.value})}/>

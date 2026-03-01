@@ -74,22 +74,24 @@ export default function ChallengeContent() {
   const [timeLeft, setTimeLeft] = useState(120);
   const [submitted, setSubmitted] = useState(false);
   const [score, setScore] = useState(0);
+  const [startTime] = useState<number>(Date.now());
 
   useEffect(() => {
     if (submitted) return;
 
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev <= 1) {
-          clearInterval(timer);
-          handleSubmit();
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
+    const interval = setInterval(() => {
+      const elapsed = (Date.now() - startTime) / 1000;
+      const remaining = 120 - elapsed;
 
-    return () => clearInterval(timer);
+      if (remaining <= 0) {
+        clearInterval(interval);
+        handleSubmit();
+      } else {
+        setTimeLeft(remaining);
+      }
+    }, 100);
+
+    return () => clearInterval(interval);
   }, [submitted]);
 
   const handleSubmit = async () => {
@@ -100,6 +102,8 @@ export default function ChallengeContent() {
       if (answers[index] === q.answer) finalScore++;
     });
 
+    const timeTaken = (Date.now() - startTime) / 1000;
+
     setScore(finalScore);
     setSubmitted(true);
 
@@ -109,7 +113,7 @@ export default function ChallengeContent() {
       body: JSON.stringify({
         email,
         score: finalScore,
-        time_taken: 120 - timeLeft,
+        time_taken: timeTaken,
       }),
     });
   };
@@ -117,7 +121,9 @@ export default function ChallengeContent() {
   return (
     <div className="min-h-screen bg-black text-white p-6">
       <h1 className="text-2xl mb-2">{genre} Quiz</h1>
-      {!submitted && <p className="mb-4">Time Left: {timeLeft}s</p>}
+      {!submitted && (
+        <p className="mb-4">Time Left: {timeLeft.toFixed(2)}s</p>
+      )}
 
       {!submitted &&
         questions.map((q, index) => (
@@ -152,7 +158,9 @@ export default function ChallengeContent() {
 
       {submitted && (
         <div className="mt-6">
-          <h2 className="text-xl mb-4">Your Score: {score}/10</h2>
+          <h2 className="text-xl mb-4">
+            Your Score: {score}/10
+          </h2>
 
           <button
             onClick={() => (window.location.href = "/leaderboard")}
